@@ -1,4 +1,5 @@
 import pymysql.cursors
+from datetime import datetime
 
 
 class QuestionsAnswers():
@@ -13,12 +14,12 @@ class QuestionsAnswers():
                             answers varchar(255) NOT NULL,
                             created_at datetime NOT NULL,
                             Index(id, questions)
-                        )'''
+                        );'''
                 cursor.execute(sql)
         finally:
             connection.close()
 
-    def get_questions_answers(self):
+    def all(self):
         connection = pymysql.connect(host='localhost', user='root', password='123', db='bot_project', charset='utf8mb4',cursorclass=pymysql.cursors.DictCursor)
         questions_answers = ''
         try:
@@ -32,6 +33,55 @@ class QuestionsAnswers():
 
         return questions_answers
 
+    def create(self, questions, answers):
+        connection = pymysql.connect(host='localhost', user='root', password='123', db='bot_project', charset='utf8mb4',cursorclass=pymysql.cursors.DictCursor)
+        try:
+            with connection.cursor() as cursor:
+                # Create a new record
+                sql = 'INSERT INTO bot_project.questions_answers(questions, answers, created_at) VALUE(%s, %s, %s)'
+
+                cursor.execute(sql, (questions, answers, datetime.strftime(datetime.now(), '%Y-%m-%d %H:%M:%S')))
+                connection.commit()
+        finally:
+            connection.close()
+
+    def update(self, id, questions, answers):
+        connection = pymysql.connect(host='localhost', user='root', password='123', db='bot_project', charset='utf8mb4',cursorclass=pymysql.cursors.DictCursor)
+        try:
+            with connection.cursor() as cursor:
+                # Create a new record
+                sql = 'update  bot_project.questions_answers set questions=%s, answers=%s where id=%s;'
+
+                cursor.execute(sql, (questions, answers, id))
+                connection.commit()
+        finally:
+            connection.close()
+
+    def delete(self, id):
+        connection = pymysql.connect(host='localhost', user='root', password='123', db='bot_project', charset='utf8mb4',cursorclass=pymysql.cursors.DictCursor)
+        try:
+            with connection.cursor() as cursor:
+                sql = 'delete from  bot_project.questions_answers  where id=%s;'
+                cursor.execute(sql, (id,))
+                connection.commit()
+        finally:
+            connection.close()
+
+
+    def get(self, id):
+        connection = pymysql.connect(host='localhost', user='root', password='123', db='bot_project', charset='utf8mb4',cursorclass=pymysql.cursors.DictCursor)
+        questions_answers = ''
+        try:
+            with connection.cursor() as cursor:
+                
+                # Create a new record
+                sql = f'SELECT * from bot_project.questions_answers where id={id};'
+                cursor.execute(sql)
+                questions_answers = cursor.fetchone()
+        finally:
+            connection.close()
+
+        return questions_answers
 
 
 # 

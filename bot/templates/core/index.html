@@ -19,13 +19,16 @@
         
         <ul class="nav flex-column bg-dark">
             <h1>Links</h1>
+            <h6>Xos Geldiniz {{name}}</h6>
             <li class="nav-item">
-              <a class="nav-link active" href="#">Questions & Answers</a>
+              <a class="nav-link active" href="/">Questions & Answers</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="#">About</a>
+              <a class="nav-link" href="/about/">About</a>
             </li>
-            
+            <li class="nav-item">
+              <a class="nav-link" href="/create/">Create</a>
+          </li>
           </ul>
     </div>
 
@@ -38,27 +41,21 @@
                 <th scope="col">Questions</th>
                 <th scope="col">Answers</th>
                 <th scope="col">Created Date</th>
+                <th scope="col">Action</th>
               </tr>
             </thead>
             <tbody>
+              {% for question_answer in questions_answers %}
               <tr>
-                <th scope="row">1</th>
-                <td>Mark</td>
-                <td>Otto</td>
-                <td>@mdo</td>
+                <th scope="row">{{question_answer.id}}</th>
+                <td>{{question_answer.questions}}</td>
+                <td>{{question_answer.answers}}</td>
+                <td>{{question_answer.created_at}}</td>
+                <td><a href="/update/{{question_answer.id}}/" class="btn btn-primary" >Edit</a> </td>
+            
               </tr>
-              <tr>
-                <th scope="row">2</th>
-                <td>Jacob</td>
-                <td>Thornton</td>
-                <td>@fat</td>
-              </tr>
-              <tr>
-                <th scope="row">3</th>
-                <td>Larry</td>
-                <td>the Bird</td>
-                <td>@twitter</td>
-              </tr>
+              {% endfor %}
+            
             </tbody>
           </table>
           
